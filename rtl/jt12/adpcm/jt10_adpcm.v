@@ -50,11 +50,11 @@ assign pcm = { {16-sigw{x1[sigw-1]}}, x1 } <<< shift;
 // has room for it
 always @(*) begin
     casez( data[2:0] )
-        3'b0??: step_next = step1=='d0 ? 6'd0 : (step1-1);
-        3'b100: step_next = step1+2;
-        3'b101: step_next = step1+5;
-        3'b110: step_next = step1+7;
-        3'b111: step_next = step1+9;
+        3'b0??: step_next = step1==6'd0 ? 6'd0 : (step1-6'd1);
+        3'b100: step_next = step1+6'd2;
+        3'b101: step_next = step1+6'd5;
+        3'b110: step_next = step1+6'd7;
+        3'b111: step_next = step1+6'd9;
     endcase
     step_1p = step_next > 6'd48 ? 6'd48 : step_next;
 end
@@ -93,8 +93,8 @@ always @( posedge clk or negedge rst_n )
     end else if(cen) begin
         // I
         sign2     <= data[3];
-        x2        <= clr ? 0 : x1;
-        step2     <= clr ? 0 : (chon ? step_1p : step1);
+        x2        <= clr ? {sigw{1'b0}} : x1;
+        step2     <= clr ? 6'd0 : (chon ? step_1p : step1);
         chon2     <= chon;
         lut_addr2 <= { step1, data[2:0] };
         // II 2's complement of inc2 if necessary
@@ -129,4 +129,4 @@ always @( posedge clk or negedge rst_n )
         step1     <= step6;
     end
 
-endmodule // jt10_adpcm    
+endmodule // jt10_adpcm
