@@ -36,7 +36,7 @@
 module jt12_acc(
     input               rst,
     input               clk,
-    input               clk_en,
+    input               clk_en /* synthesis direct_enable */,
     input               ladder,
     input               channel_en,
     input signed [8:0]  op_result,

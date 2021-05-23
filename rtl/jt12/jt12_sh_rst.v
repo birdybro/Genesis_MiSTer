@@ -25,7 +25,7 @@ module jt12_sh_rst #(parameter width=5, stages=32, rstval=1'b0 )
 (
 	input					rst,	
 	input 					clk,
-	input					clk_en,
+	input					clk_en /* synthesis direct_enable */,
 	input		[width-1:0]	din,
    	output		[width-1:0]	drop
 );
@@ -43,7 +43,7 @@ endgenerate
 
 generate
 	for (i=0; i < width; i=i+1) begin: bit_shifter
-		always @(posedge clk) 
+		always @(posedge clk, posedge rst) 
 			if( rst ) begin
 				bits[i] <= {stages{rstval}};
 			end else if(clk_en) begin
